@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Attendance System</title>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    emailjs.init("FRwgZuxkUTnIx_1lA"); // Replace with your EmailJS Public Key
+
+    function sendAttendanceEmail(name, email) {
+      emailjs.send("service_avlg4df", "template_r5ryv2l", {
+        to_name: name,
+        to_email: email,
+        message: "You were marked present today. Thank you!"
+      }).then(function(response) {
+        console.log("Email sent to:", name);
+      }, function(error) {
+        console.error("Failed to send email to:", name, error);
+      });
+    }
+
+    function submitAttendance() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      checkboxes.forEach(cb => {
+        const name = cb.getAttribute("data-name");
+        const email = cb.value;
+        sendAttendanceEmail(name, email);
+      });
+      alert("Attendance submitted and emails sent!");
+    }
+  </script>
+</head>
+<body>
+  <h2>Student Attendance</h2>
+  <form onsubmit="event.preventDefault(); submitAttendance();">
+    <label><input type="checkbox" value="orangetree1227@gmail.com" data-name="Alice"> Alice</label><br>
+    <label><input type="checkbox" value="student2@example.com" data-name="Bob"> Bob</label><br>
+    <label><input type="checkbox" value="student3@example.com" data-name="Charlie"> Charlie</label><br>
+    <label><input type="checkbox" value="student4@example.com" data-name="Diana"> Diana</label><br><br>
+
+    <button type="submit">Submit Attendance</button>
+  </form>
+</body>
+</html>

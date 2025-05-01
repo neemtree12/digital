@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Auto Send Result Mail</title>
+</head>
+<body>
+    <h1>Result Mailing System</h1>
+  <h2>Click the Button to Send the Email</h2>
+  
+  <button id="sendEmailButton">Send Email</button>
+
+  <script>
+    function sendEmail() {
+      emailjs.send("service_avlg4df", "template_7dor7p7", {
+        to_name: "Student",
+        message: "Your result is available now.",
+        to_email: "orangetree1227@gmail.com"
+      })
+      .then(function(response) {
+        console.log("Email sent!", response.status, response.text);
+      }, function(error) {
+        console.error("FAILED...", error);
+      });
+    }
+
+    document.getElementById("sendEmailButton").addEventListener("click", sendEmail);
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    emailjs.init("FRwgZuxkUTnIx_1lA");
+  </script>
+  
+</body>
+</html>
