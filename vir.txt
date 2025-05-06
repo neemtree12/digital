@@ -1,0 +1,18 @@
+05.06 8:51 AM
+sudo apt update && sudo apt upgrade
+
+sudo apt install -y software-properties-common
+
+sudo add-apt-repository "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"
+
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
+
+sudo apt update
+sudo apt install virtualbox-7.0
+
+
+Next exercise 
+
+sudo apt install libvirt-daemon-system bridge-utils virtinst virt-manager libvirt-clients qemu-kvm
+
