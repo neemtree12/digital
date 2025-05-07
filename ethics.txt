@@ -1,0 +1,105 @@
+ex2 :
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+# Generating example data
+np.random.seed(0)
+X = np.random.rand(100, 1) # Independent variable
+y = 2 + 3 * X + np.random.randn(100, 1) # Dependent variable
+# Creating a DataFrame
+data = pd.DataFrame(data=np.hstack([X, y]), columns=['X', 'y'])
+# Scatter plot
+plt.figure(figsize=(8, 6))
+plt.scatter(data['X'], data['y'])
+plt.title('Scatter plot of X vs y')
+plt.xlabel('X')
+plt.ylabel('y')
+plt.show()
+# Calculating correlation coefficient
+correlation = data['X'].corr(data['y'])
+print(f'Correlation coefficient between X and y: {correlation}')
+# Fitting a linear regression model
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(X, y)
+# Getting model parameters
+intercept = model.intercept_[0]
+slope = model.coef_[0][0]
+print(f'Intercept: {intercept}')
+print(f'Slope: {slope}')
+# Plotting the regression line
+plt.figure(figsize=(8, 6))
+plt.scatter(data['X'], data['y'])
+plt.plot(data['X'], model.predict(X), color='red')
+plt.title('Linear regression model')
+plt.xlabel('X')
+plt.ylabel('y')
+plt.show()
+
+
+
+ex3:
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+# Generating example data
+np.random.seed(0)
+X = np.random.rand(100, 1) # Independent variable
+y = 2 + 3 * X + np.random.randn(100, 1) # Dependent variable
+# Fitting a linear regression model without bias
+model_no_bias = LinearRegression(fit_intercept=False)
+model_no_bias.fit(X, y)
+# Fitting a linear regression model with bias
+model_with_bias = LinearRegression(fit_intercept=True)
+model_with_bias.fit(X, y)
+# Plotting the data points and regression lines
+plt.figure(figsize=(12, 6))
+plt.scatter(X, y, label='Data points')
+plt.plot(X, model_no_bias.predict(X), color='red', label='Regression without bias')
+plt.plot(X, model_with_bias.predict(X), color='blue', label='Regression with bias')
+plt.legend()
+plt.title('Linear Regression Model with and without Bias')
+plt.xlabel('X')
+plt.ylabel('y')
+plt.show()
+# Displaying model parameters
+print("Model parameters without bias:")
+print(f"Slope: {model_no_bias.coef_[0][0]}")
+print("\nModel parameters with bias:")
+print(f"Intercept: {model_with_bias.intercept_[0]}")
+print(f"Slope: {model_with_bias.coef_[0][0]}")
+
+
+ex4:
+
+
+
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import Perceptron
+from sklearn.metrics import accuracy_score
+# Load the dataset from UCI repository (example with Iris dataset)
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
+data = pd.read_csv(url, names=column_names)
+# Extracting features and target variable
+X = data.drop('species', axis=1)
+y = data['species']
+# Splitting the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+# Fitting a perceptron model without bias
+model_no_bias = Perceptron(fit_intercept=False)
+model_no_bias.fit(X_train, y_train)
+y_pred_no_bias = model_no_bias.predict(X_test)
+accuracy_no_bias = accuracy_score(y_test, y_pred_no_bias)
+print("Accuracy of perceptron without bias:", accuracy_no_bias)
+# Fitting a perceptron model with bias
+model_with_bias = Perceptron(fit_intercept=True)
+model_with_bias.fit(X_train, y_train)
+y_pred_with_bias = model_with_bias.predict(X_test)
+accuracy_with_bias = accuracy_score(y_test, y_pred_with_bias)
+print("Accuracy of perceptron with bias:", accuracy_with_bias)
