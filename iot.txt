@@ -1,0 +1,658 @@
+Exp.: 2 Addressing Modes
+a)Immediate Addressing Mode
+Code
+
+ORG 000H
+MOV A, #20H
+MOV B, #10H
+END
+
+b)Register Addressing Mode
+Code
+ORG 000H
+
+MOV R0, #10H 
+MOV A, R0
+MOV R1, #100 
+MOV B, R1
+END
+
+c)Direct Addressing Mode
+Code
+ORG 0000H 
+MOV 30H, #55H
+MOV A, 30H 
+MOV 40H, A    
+END    
+
+d)Indirect Addressing Mode
+Code
+ORG 0000H  
+MOV A, #55H 
+MOV R0, #30H  
+MOV @R0, A  
+MOV R1, #40H 
+MOV A, @R0 
+MOV @R1, A  
+END   
+
+--------------------------------------------------    
+
+
+Ex. No: 3
+Sum of first ‘n’ natural numbers
+
+ORG 0000H
+
+MOV A, #10H
+MOV R0, #20H
+MOV R1, #30H
+
+ADD A, R0
+ADD A, R1
+
+
+END
+
+---------------------------------------------------
+
+4)Greatest among 3 numbers
+
+
+ORG 00H
+MOV R0, #00H
+MOV R1, #0AH
+MOV R2, #00H
+
+AGAIN:
+MOV A, R2
+SUBB A, R0
+JNC UPDATE_MIN 
+AJMP SKIP
+
+UPDATE_MIN:
+MOV A, R2
+MOV R0, A 
+
+SKIP:
+INC R2 
+DJNZ R1, AGAIN 
+
+END
+
+----------------------------------------------------
+
+
+5)Internal Memory to External Memory
+
+MOV R0, #05H 
+MOV R1, #50H 
+MOV DPTR, #6000H 
+
+L1:
+MOV A, @R1 
+MOVX @DPTR, A  
+INC R1 
+INC DPTR  
+DJNZ R0, L1
+END
+
+----------------------------------------------------
+
+6)External Memory to Internal Memory
+
+ORG 0H 
+
+MOV R0, #05H
+MOV DPTR, #5000H 
+MOV R1, #50H
+
+L1:
+MOVX A, @DPTR  
+MOV R2, A  
+INC DPTR  
+INC R1 
+DJNZ R0, L1 
+END 
+
+-----------------------------------------------------
+
+7)ALU OPERATIONS
+
+ORG 0H 
+
+MOV R0, #0AH  
+MOV R1, #05H  
+MOV R5, #05H  
+MOV R7, #0AH  
+
+
+ADD A, R0  
+ADD A, R1  
+MOV R2, A  
+
+
+MOV A, R0  
+SUBB A, R1  
+MOV R3, A  
+
+
+MOV R4, #00H  
+LOOP1:
+ADD A, R0  
+MOV R4, A  
+DJNZ R5, LOOP1  
+
+
+
+MOV R6, #00H  
+LOOP2:
+CLR C  
+SUBB A, R1  
+JNC CONT  
+INC R6  
+CONT:
+MOV R7, A  
+JZ END_LOOP2  
+AJMP LOOP2  
+END_LOOP2:
+MOV A, R6  
+END  
+
+---------------------------------------------------
+
+8)Basic Arithmetic Operations in Embedded C
+
+#include <8052.h> 
+
+void main(void) 
+{
+    unsigned char x, y, z, a, b, c, d, e, f, p, q, r;
+    x = 0x12;
+    y = 0x34;
+    P0 = 0x00;
+    z = x + y;
+    P0 = z;
+
+    a = 0x12;
+    b = 0x34;
+    P1 = 0x00;
+    c = b - a;
+    P1 = c;
+    
+
+    d = 0x12;
+    e = 0x34;
+    P2 = 0x00;
+    f = e * d;
+    P2 = f;
+
+    p = 0x12;
+    q = 0x34;
+    P3 = 0x00;
+    r = q / p;
+    P3 = r;
+}
+
+-----------------------------------------------------
+
+09) BITWISE OPERATION
+
+#include <8052.h>
+void main(void) 
+{
+    unsigned char x, y, z, a, b, c, d, e, f, p, q, r;
+    
+    
+    x = 0x12;
+    y = 0x34;
+    P0 = 0x00;
+    z = x & y;
+    P0 = z;
+
+    
+    a = 0x12;
+    b = 0x34;
+    P1 = 0x00;
+    c = a | b;
+    P1 = c;
+
+    
+    d = 0x12;
+    e = 0x34;
+    P2 = 0x00;
+    f = d ^ e;
+    P2 = f;
+
+    
+    p = 0x12;
+    P3 = 0x00;
+    r = ~p;
+    P3 = r;
+}
+
+------------------------------------------------------
+
+
+10 LOGICAL OPERATIONS
+
+#include <8052.h> 
+
+void main(void) 
+{
+    unsigned char x, y, z, a, b, c, p, q, r;
+    
+    
+    x = 0x01; 
+    y = 0x03; 
+    P0 = 0x00;
+    z = x && y; 
+    P0 = z; 
+
+    
+    a = 0x00; 
+    b = 0x02; 
+    P1 = 0x00;
+    c = a || b; 
+    P1 = c; 
+
+    
+    p = 0x00; 
+    P2 = 0x00;
+    q = !p; 
+    P2 = q; 
+
+    
+    p = 0x00; 
+    q = 0x00; 
+    P3 = 0x00;
+    r = p && q; 
+    P3 = r; 
+}
+
+-----------------------------------------------------
+
+
+11) LEDBLINKING
+
+ORG 0000H          
+
+SETB P2.0          
+BLINK: CPL P2.0    
+       LCALL DELAY 
+       SJMP BLINK  
+
+DELAY: MOV R7, #01H 
+LOOP:  MOV R6, #01H 
+       DJNZ R6, $   
+       DJNZ R7, LOOP
+       RET          
+
+END
+
+-------------------------------------------------------          
+
+
+12) INTERFACING A SEVEN SEGMENT 
+
+ORG 0000H
+		LJMP 100H  
+		
+		ORG 50H 
+		DB 3FH, 6H, 5BH, 4FH, 66H, 6DH, 7DH, 7H, 7FH, 6FH, 77H, 7CH, 39H, 5EH, 79H, 71H
+		
+		
+		ORG 100H
+	START:	MOV R7, #16 
+		MOV P0, #0  
+		MOV DPTR, #50H 	
+		
+	BACK:	CLR A
+		MOVC A, @A+DPTR
+		MOV P0, A
+		INC DPTR
+		ACALL DELAY
+		DJNZ R7, BACK
+		SJMP START 
+
+		
+
+	DELAY:  MOV R1, #5
+	WAIT1:	MOV R2, #250
+	WAIT:	DJNZ R2, WAIT
+		DJNZ R1, WAIT1
+		RET
+		END
+
+-------------------------------------------------------------
+      
+15) TRAFFIC  SIGNAL – ARDUINO
+
+
+void setup()
+{
+  pinMode(4, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(2, OUTPUT);
+}
+void loop()
+{
+  digitalWrite(4, HIGH);
+  delay(3000); 
+  digitalWrite(4, LOW);
+  
+
+  digitalWrite(3, HIGH);
+  delay(3000); 
+  digitalWrite(3, LOW);
+  
+  digitalWrite(2, HIGH);
+  delay(3000); 
+  digitalWrite(2, LOW);
+}
+------------------------------------------------------------
+
+16) TEMPERATURE SENSOR
+
+
+int temp = 0;
+
+void setup()
+{
+  pinMode(A0, INPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  temp = analogRead(A0);
+  Serial.println(temp);
+
+  1 - (20 + map(0, 0, 1023, -40, 125));
+  delay(10); 
+}
+
+
+--------------------------------------------------------------
+
+17) Temperature Monitoring with Piezo Sensor
+
+int baselineTemp = 0;
+int celsius = 0;
+int fahrenheit = 0;
+
+void setup()
+{
+  pinMode(A0, INPUT);
+  Serial.begin(9600);
+
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(7, OUTPUT);
+}
+
+void loop()
+{
+  baselineTemp = 40;
+  
+  celsius = map(((analogRead(A0) - 20) * 3.04), 0, 1023, -40, 125);
+  
+  fahrenheit = ((celsius * 9) / 5 + 32);
+  Serial.print(celsius);
+  Serial.print(" C, ");a
+  Serial.print(fahrenheit);
+  Serial.println(" F");
+  
+   if (celsius < baselineTemp) {
+    digitalWrite(2, LOW);
+    digitalWrite(3, LOW);
+    digitalWrite(4, LOW);
+  }
+  if (celsius >= baselineTemp && celsius < baselineTemp + 10) {
+    digitalWrite(2, HIGH);
+    digitalWrite(3, LOW);
+    digitalWrite(4, LOW);
+  }
+  if (celsius >= baselineTemp + 10 && celsius < baselineTemp + 20) {
+    digitalWrite(2, HIGH);
+    digitalWrite(3, HIGH);
+    digitalWrite(4, LOW);
+  }
+  if (celsius >= baselineTemp + 20 && celsius < baselineTemp + 30) {
+    digitalWrite(2, HIGH);
+    digitalWrite(3, HIGH);
+    digitalWrite(4, HIGH);
+    tone(7, 220, 100);
+    delay(100);
+  }
+  if (celsius >= baselineTemp + 30) {
+    digitalWrite(2, HIGH);
+    digitalWrite(3, HIGH);
+    digitalWrite(4, HIGH);
+    tone(7, 220, 100);
+    delay(100);
+  }
+  delay(1000); 
+}
+
+
+---------------------------------------------------------------
+
+18)RGB LED  in  Arduino
+
+void setup()
+{ 
+   pinMode(11, OUTPUT);
+   pinMode(10, OUTPUT);
+   pinMode(9, OUTPUT);
+}
+void loop()
+{
+   analogWrite(11,255);
+   analogWrite(10,0);
+   analogWrite(9,0);
+   delay(2000);
+   analogWrite(11,51);
+   analogWrite(10,255);
+   analogWrite(9,51);
+   delay(2000);
+   analogWrite(11,51);
+   analogWrite(10,102);
+   analogWrite(9,255);
+   delay(2000);
+}
+
+-----------------------------------------------------------------
+
+19) LED blinking - raspberry pi
+
+from machine import Pin
+from time import sleep
+led=Pin(5,Pin.OUT)
+while True:
+  led.toggle()
+  sleep(0.5)
+
+-------------------------------------------------------------------
+
+20)PIR SENSOR
+
+from machine import Pin
+import time
+pir=Pin(15,Pin.IN)
+while True:
+  if pir.value():
+      print("Motion Detected")
+  else:
+      print("No Motion")
+  time.sleep(1)
+
+-------------------------------------------------------------------
+
+21)digital clock
+
+from machine import Pin, I2C
+from utime import sleep, sleep_ms, localtime
+LCD_ADDR = 0x27
+LCD_WIDTH = 16
+LCD_LINE_1 = 0x80
+LCD_LINE_2 = 0xC0
+LCD_BACKLIGHT = 0x08
+ENABLE = 0b00000100
+i2c = I2C(0, scl=Pin(1), sda=Pin(0), freq=400000)
+def lcd_send_byte(bits, mode):
+    high mode | (bits & 0xF0) | LCD_BACKLIGHT
+    low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT
+    for val in [high, high | ENABLE, high, low, low | ENABLE, low]:
+        i2c.writeto(LCD_ADDR, bytearray([val]))
+        sleep_ms(1)
+def lcd_init():
+    sleep_ms(20)
+    lcd_send_byte(0x33, 0)
+    lcd_send_byte(0x32, 0)
+    lcd_send_byte(0x28, 0)
+    lcd_send_byte(0x0C, 0)
+    lcd_send_byte(0x06, 0)
+    lcd_send_byte(0x01, 0)
+    sleep_ms(2)
+def lcd_clear():
+    lcd_send_byte(0x01, 0)
+    sleep_ms(2)
+def lcd_write(message, line):
+    lcd_send_byte(line, 0)
+    for char in message:
+        lcd_send_byte(ord(char), 1)
+lcd_init()
+while True:
+    t = localtime()
+    time str = "{:02}:{:02}:{:02}".format(t[3].[4]. +[5])
+    lcd_clear()
+    lcd_write("Digital clock:",LCD_LINE_1)
+    lcd_write(time_str,LCD_LINE_2)
+    sleep(1)
+
+----------------------------------------------------------------------
+
+22) Temperature monitoring
+
+import time
+import dht
+from machine import Pin
+sensor = dht.DHT22(Pin(15))
+while True:
+    sensor.measure()
+    temp = sensor.temperature()
+    hum = sensor.humidity()
+    print("Temperature:", temp, "°C")
+    print("Humidity:", hum, "%")
+    time.sleep(2)
+
+------------------------------------------------------------------------
+
+23) Setup cloud
+
+import network
+import time
+from machine import Pin
+import dht
+import ujson
+from umqtt.simple import MQTTClient
+
+# MQTT Server Parameters
+MQTT_CLIENT_ID = "micropython-weather-demo"
+MQTT_BROKER    = "broker.mqttdashboard.com"
+MQTT_USER      = "saco"
+MQTT_PASSWORD  = "saco@123"
+MQTT_TOPIC     = "wokwi-weather"
+
+sensor = dht.DHT22(Pin(15))
+
+print("Connecting to WiFi", end="")
+sta_if = network.WLAN(network.STA_IF)
+sta_if.active(True)
+sta_if.connect('Wokwi-GUEST', '')
+while not sta_if.isconnected():
+  print(".", end="")
+  time.sleep(0.1)
+print(" Connected!")
+
+print("Connecting to MQTT server... ", end="")
+client = MQTTClient(MQTT_CLIENT_ID, MQTT_BROKER, user=MQTT_USER, password=MQTT_PASSWORD)
+client.connect()
+
+print("Connected!")
+
+prev_weather = ""
+while True:
+  print("Measuring weather conditions... ", end="")
+  sensor.measure() 
+  message = ujson.dumps({
+    "temp": sensor.temperature(),
+    "humidity": sensor.humidity(),
+  })
+  if message != prev_weather:
+    print("Updated!")
+    print("Reporting to MQTT topic {}: {}".format(MQTT_TOPIC, message))
+    client.publish(MQTT_TOPIC, message)
+    prev_weather = message
+  else:
+    print("No change")
+  time.sleep(1)
+
+-------------------------------------------------------------------------------------------
+
+24) LED Chase
+
+import time
+from machine import Pin
+
+led_pins = [0,1,2,3]
+
+while True:
+    for led in led_pins:
+        led = Pin(led, Pin.OUT)
+        led.value(1)
+        time.sleep(1)
+        led.value(0)
+
+
+
+--------------------------------------------------------------------------------------------
+
+25) Binary counter
+
+import time
+from machine import Pin
+
+led_pins = [0, 1, 2, 3]
+
+leds = [Pin(pin, Pin.OUT) for pin in led_pins]
+
+def display_binary(value):
+    for i in range(4):
+        leds[i].value((value >> i) & 1)
+
+counter = 0
+while True:
+    for led in led_pins:
+        display_binary(counter)
+        counter = (counter + 1) % 16
+        time.sleep(1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
