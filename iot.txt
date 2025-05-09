@@ -372,6 +372,22 @@ void loop()
   delay(10); 
 }
 
+or 
+
+int temp = 0;
+
+void setup() {
+  pinMode(A0, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  temp = analogRead(A0);
+  int temperature = map(temp, 0, 1023, -40, 125);
+  Serial.println(temperature); 
+  delay(500);
+}
+
 
 --------------------------------------------------------------
 
