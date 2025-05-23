@@ -508,6 +508,51 @@ while True:
 
 21)digital clock
 
+#include <LiquidCrystal.h>
+
+// Initialize the LCD (RS, E, D4, D5, D6, D7)
+LiquidCrystal lcd(12, 11, 10, 9, 8, 7);
+
+// Time variables
+unsigned long previousMillis = 0;
+int seconds = 0;
+int minutes = 0;
+
+void setup() {
+  lcd.begin(16, 2);
+}
+
+void loop() {
+  unsigned long currentMillis = millis();
+
+  // Update every 1000 milliseconds (1 second)
+  if (currentMillis - previousMillis >= 1000) {
+    previousMillis = currentMillis;
+
+    seconds++;
+    if (seconds >= 60) {
+      seconds = 0;
+      minutes++;
+    }
+    if (minutes >= 60) {
+      minutes = 0;
+    }
+
+    // Display time on LCD
+    lcd.setCursor(0, 0);
+    lcd.print("Time: ");
+
+    if (minutes < 10) lcd.print("0");
+    lcd.print(minutes);
+    lcd.print(":");
+    if (seconds < 10) lcd.print("0");
+    lcd.print(seconds);
+  }
+}
+
+************************
+21)digital clock
+
 from machine import Pin, I2C
 from utime import sleep, sleep_ms, localtime
 LCD_ADDR = 0x27
