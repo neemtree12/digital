@@ -510,10 +510,8 @@ while True:
 
 #include <LiquidCrystal.h>
 
-// Initialize the LCD (RS, E, D4, D5, D6, D7)
 LiquidCrystal lcd(12, 11, 10, 9, 8, 7);
 
-// Time variables
 unsigned long previousMillis = 0;
 int seconds = 0;
 int minutes = 0;
@@ -525,7 +523,6 @@ void setup() {
 void loop() {
   unsigned long currentMillis = millis();
 
-  // Update every 1000 milliseconds (1 second)
   if (currentMillis - previousMillis >= 1000) {
     previousMillis = currentMillis;
 
@@ -538,7 +535,6 @@ void loop() {
       minutes = 0;
     }
 
-    // Display time on LCD
     lcd.setCursor(0, 0);
     lcd.print("Time: ");
 
