@@ -1,0 +1,99 @@
+import socket
+def port_scanner(ip, port):
+   try:
+     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+       s.settimeout(1)
+       s.connect((ip, port))
+       print(f"[+] Port {port} is OPEN on {ip}")
+   except:
+     print(f"[-] Port {port} is CLOSED on {ip}")
+
+ip = "8.8.8.8"
+for port in range(45,55):
+   port_scanner(ip, port)
+
+------------------------------------------------------------------------------------
+
+from datetime import datetime
+def capture_input():
+
+  while True:
+    user_input = input("Please type something (type 'exit' to stop): ")
+    if user_input.lower() == 'exit':
+       print("Exiting input capture.")
+       break
+
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open("keylog.txt", "a") as f:
+      f.write(f"[{timestamp}] {user_input}\n")
+    print(f"Captured input: {user_input}")
+
+capture_input()
+
+------------------------------------------------------------------------------------
+
+import requests
+def check_sql_injection(url, param):
+  payload = f"{url}?{param}=' OR 1=1 --"
+  response = requests.get(payload)
+  if "error" in response.text or "syntax" in response.text:
+    print(f"Potential SQL injection vulnerability at: {payload}")
+  else:
+    print(f"Seems safe: {url}")
+
+#check_sql_injection("https://portal.naanmudhalvan.tn.gov.in/login", "login")
+check_sql_injection("http://example.com/search", "query")
+check_sql_injection("http://testphp.vulnweb.com/login.php", "username")
+check_sql_injection("http://testphp.vulnweb.com/search.php", "search")
+
+
+------------------------------------------------------------------------------------
+
+
+import time
+
+secret_key = 123456
+def generate_otp():
+  return str((int(time.time()) + secret_key) % 1000000).zfill(6)
+
+password = input("Enter your password: ")
+if password == "12345":
+  otp = generate_otp()
+  print(f"Your OTP is: {otp}")
+  user_otp = input("Enter the OTP: ")
+  if user_otp == otp:
+    print("Authentication complete.")
+  else:
+    print("Invalid OTP.")
+else:
+  print("Incorrect password.")
+
+
+------------------------------------------------------------------------------------
+
+def caesar_cipher(message, shift, mode='encrypt'):
+  result = ""
+  for char in message:
+    if char.isalpha():
+      shift_base = 65 if char.isupper() else 97
+      shift_value = shift if mode == 'encrypt' else -shift
+      result += chr((ord(char) - shift_base + shift_value) % 26 + shift_base)
+    else:
+      result += char
+  return result
+
+message = input("Enter the message: ")
+shift = int(input("Enter the shift value: "))
+
+encrypted_message = caesar_cipher(message, shift, 'encrypt')
+print(f"Encrypted message: {encrypted_message}")
+
+decrypted_message = caesar_cipher(encrypted_message, shift, 'decrypt')
+print(f"Decrypted message: {decrypted_message}")
+
+------------------------------------------------------------------------------------
+
+
+
+
+
