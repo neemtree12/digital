@@ -16,3 +16,14 @@ Next exercise
 
 sudo apt install libvirt-daemon-system bridge-utils virtinst virt-manager libvirt-clients qemu-kvm
 
+
+___________________________________________
+
+no
+enable
+configure terminal
+interface g0/0
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+exit
+
