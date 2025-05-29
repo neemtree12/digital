@@ -1,0 +1,9 @@
+https://tools.wordstream.com/
+https://trends.google.com/
+https://brand24.com
+
+pred.csv
+insu.csv
+result.html
+absent.html
+news.py
